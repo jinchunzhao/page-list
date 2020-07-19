@@ -21,10 +21,11 @@ public class PageList {
      * 总数
      */
     private long total = 0;
+
     /**
      * 每页显示条数，默认 10
      */
-    private long pageSize = 10;
+    private long size = 10;
 
     /**
      * 当前页
@@ -38,26 +39,21 @@ public class PageList {
      * 分页构造函数
      *
      * @param current 当前页
-     * @param pageSize    每页显示条数
+     * @param size    每页显示条数
      */
-    public PageList(long current, long pageSize) {
-        this(current, pageSize, 0);
+    public PageList(long current, long size) {
+        this(current, size, 0);
     }
 
-
-
-    public PageList(long current, long pageSize, long total) {
+    public PageList(long current, long size, long total) {
         if (current > 1) {
             this.current = current;
-        }else{
+        } else {
             this.current = 1;
         }
-        this.pageSize = pageSize;
+        this.size = size;
         this.total = total;
     }
-
-
-
 
     public List<?> getRecords() {
         return records;
@@ -75,12 +71,12 @@ public class PageList {
         this.total = total;
     }
 
-    public long getPageSize() {
-        return pageSize;
+    public long getSize() {
+        return size;
     }
 
-    public void setPageSize(long pageSize) {
-        this.pageSize = pageSize;
+    public void setSize(long size) {
+        this.size = size;
     }
 
     public long getCurrent() {
@@ -94,7 +90,7 @@ public class PageList {
     /**
      * 集合分页
      *
-     * @param resourceList 要分页的集合
+     * @param resourceList 需要分页的集合
      * @return 分页后的集合
      */
     public List<?> getPageList(List<?> resourceList) {
@@ -102,19 +98,18 @@ public class PageList {
             this.current = 1;
         }
         this.total = resourceList.size();
-        int pageCount = (int) (this.total / this.pageSize);
-        int fromIndex = (int) ((this.current - 1) * this.pageSize);
-        int toIndex = (int) (fromIndex + this.pageSize);
+        int pageCount = (int) (this.total / this.size);
+        int fromIndex = (int) ((this.current - 1) * this.size);
+        int toIndex = (int) (fromIndex + this.size);
         if (toIndex >= this.total) {
-            toIndex = (int)this.total;
+            toIndex = (int) this.total;
         }
         if (this.current > pageCount + 1) {
             fromIndex = 0;
             toIndex = 0;
         }
-        this.records = resourceList.subList( fromIndex, toIndex );
+        this.records = resourceList.subList(fromIndex, toIndex);
         return this.records;
     }
-
 
 }
