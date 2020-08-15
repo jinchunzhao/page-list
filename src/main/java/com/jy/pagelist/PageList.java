@@ -32,6 +32,9 @@ public class PageList {
      */
     private long current = 1;
 
+    /**
+     * 空参分页构造器
+     */
     public PageList() {
     }
 
@@ -45,6 +48,16 @@ public class PageList {
         this(current, size, 0);
     }
 
+    /**
+     * 分页构造器
+     *
+     * @param current
+     *        当前页
+     * @param size
+     *        每页显示条数
+     * @param total
+     *        总数
+     */
     public PageList(long current, long size, long total) {
         if (current > 1) {
             this.current = current;
@@ -88,15 +101,12 @@ public class PageList {
     }
 
     /**
-     * 集合分页
+     * 集合分页逻辑处理
      *
      * @param resourceList 需要分页的集合
      * @return 分页后的集合
      */
     public List<?> getPageList(List<?> resourceList) {
-        if (this.current < 1) {
-            this.current = 1;
-        }
         this.total = resourceList.size();
         int pageCount = (int) (this.total / this.size);
         int fromIndex = (int) ((this.current - 1) * this.size);
@@ -104,7 +114,8 @@ public class PageList {
         if (toIndex >= this.total) {
             toIndex = (int) this.total;
         }
-        if (this.current > pageCount + 1) {
+        int maxCount = pageCount + 1;
+        if (this.current > maxCount) {
             fromIndex = 0;
             toIndex = 0;
         }
